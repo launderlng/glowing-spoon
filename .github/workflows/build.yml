@@ -1,0 +1,25 @@
+   name: Build xzx.exe
+
+   on:
+     push:
+     workflow_dispatch:
+
+   jobs:
+     build:
+       runs-on: windows-latest
+       steps:
+         - name: Checkout
+           uses: actions/checkout@v4
+
+         - name: Configure (CMake, MSVC x64)
+           run: cmake -S . -B build -A x64
+
+         - name: Build (Release)
+           run: cmake --build build --config Release
+
+         - name: Upload xzx.exe
+           uses: actions/upload-artifact@v4
+           with:
+             name: xzx
+             path: build/Release/xzx.exe
+             if-no-files-found: error
